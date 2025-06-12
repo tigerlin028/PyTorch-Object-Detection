@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data files
+*.mp4
+*.avi
+*.mov
+*.jpg
+*.png
+*.xml
+
+# Weights
+*.pth
+*.onnx
+
+# VSCode / PyCharm / system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python envs
+.env/
+.venv/
+env/
+venv/
+*.egg-info/
+
+# Logs
+*.log
+logs/
