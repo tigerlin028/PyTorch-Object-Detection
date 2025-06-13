@@ -122,8 +122,8 @@ detectnet --model=Final.onnx \
           --output-bbox=boxes \
           --input-codec=h264 \
           --output-codec=h264 \
-          Peach_paradise_Lychee_chia_etc.mp4 \
-          Peach_output.mp4
+          Aloha_breeze.mp4 \
+          Aloha_breeze_output.mp4
 ```
 
 This will run real-time object detection using the Jetson GPU and export the processed video with bounding boxes.
