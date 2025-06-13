@@ -104,4 +104,3 @@ python scripts/onnx_video.py   # ONNX inference on videos
 ## 📌 Author
 
 Xiaotian Lin
-
