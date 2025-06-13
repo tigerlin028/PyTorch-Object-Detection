@@ -1,44 +1,34 @@
 # PyTorch Object Detection
 
-This project implements a lightweight SSD object detection pipeline using PyTorch, tailored for drink detection (e.g., `full`, `not_full`, `foam_ready`). It is based on the MobileNetV2-SSD-Lite model and supports both training and inference on images and videos.
+This project is a PyTorch-based object detection pipeline for classifying drink fullness levels (e.g., `full`, `not_full`, `foam_ready`). It is based on and adapted from the excellent open-source repository:  
+👉 [qfgaohao/pytorch-ssd](https://github.com/qfgaohao/pytorch-ssd)
 
-## 🔁 Workflow Overview
+We customized the data pipeline, training logic, and inference scripts for practical deployment on desktop GPUs and NVIDIA Jetson devices.
 
-1. **Load Pretrained Model**
-   - Use `mb2-ssd-lite-mp-0_686.pth` as the base model pretrained on COCO.
+---
 
-2. **Data Annotation with CVAT**
-   - Annotate and clip relevant video segments using CVAT.
-   - Export the dataset in Pascal VOC format.
+## 📦 Environment Setup
 
-3. **Model Training**
-   - Train using `core/train_ssd_cleaned.py`, which includes customized preprocessing and data augmentation logic.
+```bash
+python -m venv venv
+source venv/bin/activate       # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-4. **Testing `.pth` Model**
-   - Use `scripts/pth_image.py` and `scripts/pth_video.py` to run inference on images and videos with the trained `.pth` model.
+---
 
-5. **Export to ONNX**
-   - Convert the PyTorch model to ONNX format using `scripts/export_onnx.py`.
-
-6. **ONNX Inference**
-   - Run inference with the exported ONNX model using `scripts/onnx_image.py` and `onnx_video.py`.
-
-7. **Jetson Deployment (Recommended)**
-   - ONNX models are highly compatible with NVIDIA Jetson devices, especially using `detectnet` or TensorRT for accelerated inference.
-
-## 📁 Project Structure
+## 📁 Directory Overview
 
 ```
 PyTorch Object Detection/
-│
-├── core/                    # Core training & data processing scripts
+├── core/                    # Core logic: training, preprocessing, augmentation
 │   ├── train_ssd_cleaned.py
 │   ├── voc_dataset.py
 │   ├── transforms.py
 │   ├── predictor.py
 │   └── data_preprocessing.py
 │
-├── scripts/                 # Inference & model export scripts
+├── scripts/                 # Inference & export tools
 │   ├── pth_image.py
 │   ├── pth_video.py
 │   ├── onnx_image.py
@@ -50,10 +40,23 @@ PyTorch Object Detection/
 │   ├── Aloha_breeze_pth_output.mp4
 │   └── Aloha_breeze_onnx_output.mp4
 │
-├── mb2-ssd-lite-mp-0_686.pth  # Pretrained base model
+├── mb2-ssd-lite-mp-0_686.pth  # Pretrained MobileNetV2-SSD model
+├── requirements.txt
+└── README.md
 ```
 
-## 🏋️‍♂️ Training
+---
+
+## 🧠 Workflow
+
+1. **Prepare Pretrained Model**  
+   Download and place `mb2-ssd-lite-mp-0_686.pth` in the project root.
+
+2. **Dataset Preparation (VOC Format)**  
+   Use [CVAT](https://github.com/opencv/cvat) to annotate and export video frames.  
+   Format should match Pascal VOC (XML + JPEG + ImageSets).
+
+3. **Train the Model**
 
 ```bash
 python core/train_ssd_cleaned.py ^
@@ -67,39 +70,38 @@ python core/train_ssd_cleaned.py ^
   --num_workers 24
 ```
 
-## 🎥 Inference
+4. **Run Inference with PyTorch Model**
 
-- Run inference on image:
-  ```bash
-  python scripts/pth_image.py
-  ```
+```bash
+python scripts/pth_image.py    # Inference on images
+python scripts/pth_video.py    # Inference on videos
+```
 
-- Run inference on video:
-  ```bash
-  python scripts/pth_video.py
-  ```
-
-## 🔄 Export to ONNX
+5. **Export to ONNX Format**
 
 ```bash
 python scripts/export_onnx.py
 ```
 
-## 📦 Dependencies
+6. **Run Inference with ONNX Model**
 
-- Python 3.9
-- PyTorch >= 1.10
-- OpenCV
-- tqdm
-- numpy
-
-Install:
 ```bash
-pip install -r requirements.txt
+python scripts/onnx_image.py   # ONNX inference on images
+python scripts/onnx_video.py   # ONNX inference on videos
 ```
+
+> ONNX models are optimized for deployment on NVIDIA Jetson platforms, especially with [TensorRT](https://developer.nvidia.com/tensorrt) or `detectnet` pipelines.
 
 ---
 
-### 🙌 Contributors
+## 🤝 Acknowledgements
 
-- Xiaotian Lin
+- [qfgaohao/pytorch-ssd](https://github.com/qfgaohao/pytorch-ssd) — base architecture
+- [NVIDIA Jetson](https://developer.nvidia.com/embedded-computing) — edge deployment
+
+---
+
+## 📌 Author
+
+Xiaotian Lin
+
